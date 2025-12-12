@@ -276,6 +276,20 @@ export const contact = {
   mapEmbedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.9663095919364!2d-74.00425878428698!3d40.74076794379132!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259bf5c1654f3%3A0xc80f9cfce5383d5d!2sGoogle!5e0!3m2!1sen!2sus!4v1635959481673!5m2!1sen!2sus",
 };
 
+// ====== 11b. EMAILJS CONFIGURATION ======
+/**
+ * TO SET UP EMAIL FUNCTIONALITY:
+ * 1. Go to https://www.emailjs.com/ and create a FREE account
+ * 2. Add an email service (Gmail, Outlook, etc.)
+ * 3. Create an email template with these variables: {{from_name}}, {{from_email}}, {{phone}}, {{subject}}, {{message}}
+ * 4. Copy your Service ID, Template ID, and Public Key below
+ */
+export const emailConfig = {
+  serviceId: "YOUR_SERVICE_ID",      // Replace with your EmailJS Service ID
+  templateId: "YOUR_TEMPLATE_ID",    // Replace with your EmailJS Template ID
+  publicKey: "YOUR_PUBLIC_KEY",      // Replace with your EmailJS Public Key
+};
+
 // ====== 12. FOOTER ======
 export const footer = {
   description: "Prudent Juris is committed to providing exceptional legal services with integrity, expertise, and dedication to our clients' success.",

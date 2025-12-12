@@ -9,10 +9,12 @@
  * - Content: Modify in src/data/siteData.ts (contact, firmInfo, socialLinks)
  * - Map: Update mapEmbedUrl in contact object
  * - Social links: Modify socialLinks array
+ * - Email: Configure emailConfig in siteData.ts with your EmailJS credentials
  */
 
 import { useState } from "react";
-import { contact, firmInfo, socialLinks } from "@/data/siteData";
+import emailjs from "@emailjs/browser";
+import { contact, firmInfo, socialLinks, emailConfig } from "@/data/siteData";
 import { 
   Mail, 
   Phone, 
@@ -57,16 +59,53 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    
-    toast({
-      title: "Message Sent!",
-      description: "Thank you for contacting us. We'll get back to you within 24 hours.",
-    });
-    
-    setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
-    setIsSubmitting(false);
+    // Check if EmailJS is configured
+    if (emailConfig.serviceId === "YOUR_SERVICE_ID" || 
+        emailConfig.templateId === "YOUR_TEMPLATE_ID" || 
+        emailConfig.publicKey === "YOUR_PUBLIC_KEY") {
+      // Fallback: Show success message without actually sending (for demo/testing)
+      console.log("EmailJS not configured. Form data:", formData);
+      toast({
+        title: "Demo Mode",
+        description: "EmailJS not configured. See console for form data. Configure emailConfig in siteData.ts to enable emails.",
+        variant: "default",
+      });
+      setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
+      setIsSubmitting(false);
+      return;
+    }
+
+    try {
+      // Send email using EmailJS
+      await emailjs.send(
+        emailConfig.serviceId,
+        emailConfig.templateId,
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          phone: formData.phone,
+          subject: formData.subject,
+          message: formData.message,
+        },
+        emailConfig.publicKey
+      );
+      
+      toast({
+        title: "Message Sent!",
+        description: "Thank you for contacting us. We'll get back to you within 24 hours.",
+      });
+      
+      setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
+    } catch (error) {
+      console.error("Email sending failed:", error);
+      toast({
+        title: "Error",
+        description: "Failed to send message. Please try again or contact us directly.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
